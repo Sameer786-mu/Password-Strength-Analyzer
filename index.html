@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SecureCheck – Password Strength Analyzer</title>
+  <meta name="description" content="Analyze password strength and check exposure in known data breaches using the Have I Been Pwned k-anonymity API." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="bg-orbs"><span></span><span></span><span></span></div>
+
+  <!-- NAVIGATION -->
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="#home" class="logo"><i data-lucide="shield-check"></i><span>Secure<b>Check</b></span></a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#home">Home</a>
+        <a href="#analyzer">Password Analyzer</a>
+        <a href="#breach">Breach Checker</a>
+        <a href="#tips">Security Tips</a>
+        <a href="#about">About</a>
+      </nav>
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu"><i data-lucide="menu"></i></button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero container" id="home">
+    <div class="hero-text reveal">
+      <span class="badge"><i data-lucide="lock"></i> Privacy-first · Runs in your browser</span>
+      <h1>Your Password Security <span class="grad">Starts Here.</span></h1>
+      <p>Analyze password strength, detect compromised passwords, and improve your online security with intelligent password analysis.</p>
+      <div class="hero-btns">
+        <a href="#analyzer" class="btn btn-primary"><i data-lucide="scan-line"></i> Analyze Password</a>
+        <a href="#tips" class="btn btn-ghost"><i data-lucide="book-open"></i> Learn More</a>
+      </div>
+    </div>
+    <div class="hero-art reveal">
+      <div class="shield-ring r1"></div>
+      <div class="shield-ring r2"></div>
+      <div class="shield-ring r3"></div>
+      <div class="shield-core"><i data-lucide="shield-check"></i></div>
+      <div class="float-chip c1"><i data-lucide="hash"></i> SHA-1</div>
+      <div class="float-chip c2"><i data-lucide="eye-off"></i> k-Anonymity</div>
+      <div class="float-chip c3"><i data-lucide="database"></i> HIBP</div>
+    </div>
+  </section>
+
+  <section class="container info-cards">
+    <div class="glass info-card reveal"><i data-lucide="gauge"></i><h3>Password Strength Analysis</h3><p>Length, character variety, repeats and predictable patterns — scored in real time.</p></div>
+    <div class="glass info-card reveal"><i data-lucide="radar"></i><h3>Breach Detection</h3><p>Checks against hundreds of millions of leaked passwords from Have I Been Pwned.</p></div>
+    <div class="glass info-card reveal"><i data-lucide="fingerprint"></i><h3>Privacy Protection</h3><p>Your password never leaves your device. Only 5 hash characters are sent.</p></div>
+  </section>
+
+  <!-- ANALYZER -->
+  <section class="container section" id="analyzer">
+    <div class="section-head reveal">
+      <h2>Password <span class="grad">Analyzer</span></h2>
+      <p>Type a password to see a live, local analysis. Use demo passwords only — never your real ones.</p>
+    </div>
+
+    <div class="glass analyzer reveal">
+      <label for="passwordInput" class="label">Enter password</label>
+      <div class="input-wrap">
+        <i data-lucide="key-round" class="input-icon"></i>
+        <input type="password" id="passwordInput" placeholder="e.g. Summer2024!" autocomplete="off" spellcheck="false" />
+        <button class="icon-btn" id="toggleBtn" title="Show / hide password" aria-label="Show or hide password"><i data-lucide="eye"></i></button>
+        <button class="icon-btn" id="clearBtn" title="Clear" aria-label="Clear"><i data-lucide="x"></i></button>
+      </div>
+      <div class="actions">
+        <button class="btn btn-primary" id="analyzeBtn"><i data-lucide="scan-line"></i> Analyze</button>
+        <button class="btn btn-danger" id="breachBtn"><i data-lucide="radar"></i> Check Password Exposure</button>
+      </div>
+
+      <div class="meter-block">
+        <div class="meter-top">
+          <span>Strength: <b id="strengthLabel">—</b></span>
+          <span><b id="scoreValue">0</b>/100 <small>(educational score)</small></span>
+        </div>
+        <div class="meter"><div class="meter-fill" id="meterFill"></div></div>
+        <div class="meter-steps"><span>Very Weak</span><span>Weak</span><span>Medium</span><span>Strong</span><span>Very Strong</span></div>
+        <p class="disclaimer"><i data-lucide="info"></i> This score is for learning purposes only and does not guarantee a password is secure.</p>
+      </div>
+    </div>
+
+    <h3 class="sub-title reveal">Analysis Dashboard</h3>
+    <div class="cards-grid" id="analysisCards"></div>
+
+    <h3 class="sub-title reveal">Security Recommendations</h3>
+    <ul class="glass recs" id="recommendations"><li class="muted">Enter a password to receive personalized recommendations.</li></ul>
+  </section>
+
+  <!-- BREACH -->
+  <section class="container section" id="breach">
+    <div class="section-head reveal">
+      <h2>Breach <span class="grad">Checker</span></h2>
+      <p>Uses the official Have I Been Pwned Pwned Passwords API with k-anonymity. Only runs when you click the button.</p>
+    </div>
+    <div class="breach-grid">
+      <div class="glass breach-result reveal" id="breachResult">
+        <div class="state idle">
+          <i data-lucide="radar"></i>
+          <h3>No check performed yet</h3>
+          <p>Enter a password above and click <b>Check Password Exposure</b>.</p>
+        </div>
+      </div>
+      <div class="glass flow reveal">
+        <h3><i data-lucide="workflow"></i> How it works</h3>
+        <ol>
+          <li><b>1.</b> Your password is hashed with SHA-1 locally (Web Crypto API).</li>
+          <li><b>2.</b> Only the first 5 hash characters are sent to HIBP.</li>
+          <li><b>3.</b> HIBP returns ~800+ matching suffixes (padded).</li>
+          <li><b>4.</b> The remaining 35 characters are compared in your browser.</li>
+          <li><b>5.</b> Nothing is stored, logged or saved.</li>
+        </ol>
+        <div class="hash-preview" id="hashPreview">Hash prefix sent: <code>—</code></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIPS -->
+  <section class="container section" id="tips">
+    <div class="section-head reveal">
+      <h2>Security <span class="grad">Tips</span></h2>
+      <p>Simple habits that dramatically reduce your risk online.</p>
+    </div>
+    <div class="cards-grid tips">
+      <div class="glass tip reveal"><i data-lucide="ruler"></i><h4>Length Matters</h4><p>Every extra character multiplies the guesses an attacker needs. Aim for 14+ characters or a passphrase.</p></div>
+      <div class="glass tip reveal"><i data-lucide="copy"></i><h4>Password Reuse Risks</h4><p>One breached site exposes every account sharing that password via credential stuffing.</p></div>
+      <div class="glass tip reveal"><i data-lucide="swords"></i><h4>Common Attacks</h4><p>Brute force, dictionary attacks, credential stuffing and phishing all target weak or reused passwords.</p></div>
+      <div class="glass tip reveal"><i data-lucide="smartphone"></i><h4>Multi-Factor Authentication</h4><p>MFA adds a second barrier — even a stolen password isn’t enough on its own.</p></div>
+      <div class="glass tip reveal"><i data-lucide="vault"></i><h4>Password Managers</h4><p>Generate and store long, unique passwords for every account. Remember just one.</p></div>
+      <div class="glass tip reveal"><i data-lucide="database-zap"></i><h4>Data Breaches</h4><p>Billions of credentials have leaked. Assume old passwords are known and rotate exposed ones.</p></div>
+      <div class="glass tip reveal"><i data-lucide="globe-lock"></i><h4>Security Awareness</h4><p>Check URLs, beware urgent messages, and keep devices and browsers updated.</p></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="container section" id="about">
+    <div class="glass about reveal">
+      <div>
+        <h2>About <span class="grad">SecureCheck</span></h2>
+        <p><b>SecureCheck – Password Strength Analyzer</b></p>
+        <p>SecureCheck is a web-based cybersecurity awareness project developed using HTML, CSS, and JavaScript. It analyzes password characteristics, identifies predictable patterns, and integrates the Have I Been Pwned Pwned Passwords API to check whether passwords have appeared in known data breaches.</p>
+        <p>The project demonstrates JavaScript programming, browser APIs, external API integration, and fundamental cybersecurity concepts.</p>
+      </div>
+      <div class="stack">
+        <span><i data-lucide="file-code"></i> HTML5</span>
+        <span><i data-lucide="palette"></i> CSS3</span>
+        <span><i data-lucide="braces"></i> JavaScript</span>
+        <span><i data-lucide="hash"></i> Web Crypto</span>
+        <span><i data-lucide="cloud"></i> Fetch API</span>
+        <span><i data-lucide="database"></i> HIBP API</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div>
+        <a href="#home" class="logo"><i data-lucide="shield-check"></i><span>Secure<b>Check</b></span></a>
+        <p class="muted">Educational password security tool.</p>
+      </div>
+      <div class="footer-links">
+        <a href="#about">About Project</a>
+        <a href="#tips">Security Tips</a>
+        <a href="https://haveibeenpwned.com/Passwords" target="_blank" rel="noopener">API Credits: Have I Been Pwned</a>
+        <a href="#" id="privacyLink">Privacy Policy</a>
+      </div>
+    </div>
+    <p class="container copy">© <span id="year"></span> SecureCheck. Compromised-password data provided by <a href="https://haveibeenpwned.com" target="_blank" rel="noopener">Have I Been Pwned</a> (Troy Hunt), licensed CC BY 4.0.</p>
+  </footer>
+
+  <!-- PRIVACY MODAL -->
+  <div class="modal" id="privacyModal">
+    <div class="glass modal-box">
+      <h3><i data-lucide="shield"></i> Privacy Policy</h3>
+      <p>SecureCheck never stores, logs or transmits your password. Analysis runs entirely in your browser. For breach checks, only the first 5 characters of the SHA-1 hash are sent to Have I Been Pwned. No cookies, LocalStorage or databases are used for password data.</p>
+      <button class="btn btn-primary" id="closeModal">Got it</button>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
