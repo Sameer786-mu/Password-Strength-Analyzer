@@ -1,6 +1,6 @@
 /* ========================================================
    SecureCheck – Client Configuration Fallback
-   When running via `npm start` (server.js), configuration
+   When running via `npm start` (dev-server.js), configuration
    is loaded dynamically from `.env`.
    When opened statically (e.g. Live Server or file://),
    these defaults are used.

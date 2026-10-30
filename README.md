@@ -9,7 +9,7 @@ Password-Strength-Analyzer/
 ├── style.css         Dark navy glassmorphism design, animations, responsive layout
 ├── script.js         Core logic: strength analysis, pattern detection, SHA-1, HIBP API
 ├── config.js         Client-side configuration fallback
-├── server.js         Local zero-dependency Node server (serves app & /api/config)
+├── dev-server.js     Local zero-dependency Node server (serves app & /api/config)
 ├── package.json      Project scripts (start, dev, test)
 ├── test.js           Automated unit test suite
 ├── .env              Local environment variables (configured with public Web APIs)
@@ -27,7 +27,7 @@ You do not need to install any external dependencies! Standard Node.js is all th
 ```bash
 # Start the local development server (reads .env automatically)
 npm start
-# or: node server.js
+# or: node dev-server.js
 ```
 Then open: **`http://localhost:3000`** in your browser.
 
@@ -57,7 +57,7 @@ HIBP_DOCS_URL=https://haveibeenpwned.com/API/v3#PwnedPasswords
 NODE_ENV=development
 ```
 
-When running `server.js`, the configuration is served dynamically to the client via `/api/config` and `/config.js`.
+When running `dev-server.js`, the configuration is served dynamically to the client via `/api/config` and `/config.js`.
 
 ## Key Functions
 

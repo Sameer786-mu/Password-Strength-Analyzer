@@ -129,13 +129,15 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`\n=================================================`);
-  console.log(`  SecureCheck Server Running!`);
-  console.log(`  Local URL:        http://localhost:${PORT}`);
-  console.log(`  Config Endpoint:  http://localhost:${PORT}/api/config`);
-  console.log(`  HIBP Range API:   ${process.env.HIBP_API_URL || envConfig.HIBP_API_URL || "https://api.pwnedpasswords.com/range/"}`);
-  console.log(`=================================================\n`);
-});
+if (require.main === module) {
+  server.listen(PORT, () => {
+    console.log(`\n=================================================`);
+    console.log(`  SecureCheck Local Server Running!`);
+    console.log(`  Local URL:        http://localhost:${PORT}`);
+    console.log(`  Config Endpoint:  http://localhost:${PORT}/api/config`);
+    console.log(`  HIBP Range API:   ${process.env.HIBP_API_URL || envConfig.HIBP_API_URL || "https://api.pwnedpasswords.com/range/"}`);
+    console.log(`=================================================\n`);
+  });
+}
 
 module.exports = server;

@@ -4,12 +4,12 @@ module.exports = (req, res) => {
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") {
-    res.writeHead(204);
+    res.statusCode = 204;
     res.end();
     return;
   }
 
-  const host = (req.headers && req.headers.host) || "localhost";
+  const host = (req.headers && (req.headers["x-forwarded-host"] || req.headers.host)) || "localhost";
   const config = {
     PUBLIC_SITE_URL: process.env.PUBLIC_SITE_URL || `https://${host}`,
     HIBP_API_URL: process.env.HIBP_API_URL || "https://api.pwnedpasswords.com/range/",
@@ -17,6 +17,7 @@ module.exports = (req, res) => {
     NODE_ENV: process.env.NODE_ENV || "production"
   };
 
-  res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
+  res.statusCode = 200;
   res.end(JSON.stringify(config, null, 2));
 };
