@@ -4,6 +4,7 @@
   "description": "SecureCheck - Password Strength Analyzer with Have I Been Pwned breach detection",
   "main": "server.js",
   "scripts": {
+    "build": "echo 'Build complete'",
     "start": "node server.js",
     "dev": "node server.js",
     "test": "node test.js"
